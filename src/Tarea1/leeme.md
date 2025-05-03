@@ -1,32 +1,47 @@
 # Instrucciones para Ejecutar, Testear y Compilar el Programa
 
 ## Descripción del Proyecto
-Este proyecto contiene tres clases principales:
+Este proyecto contiene 2 clases principales y una clase auxiliar:
 1. `BitMap` - Implementación de un bitmap para manejo eficiente de bits
-2. `Arista` - Representa una conexión entre nodos en un grafo
-3. `GND` - Implementación de un Grafo No Dirigido usando una matriz de adyacencia basada en bitmap
+2. `GND` - Implementación de un Grafo No Dirigido usando una matriz de adyacencia basada en bitmap
+3. `Arista` - Representa una conexión entre nodos en un grafo
 
 ## Requisitos
 - Java JDK 8 o superior
 - Sistema operativo con terminal/consola
+- Git & Intellij Idea
+
 
 ## Instrucciones
+### Forma Facil
+Los archivos estan disponibles en un repositorio de github:
 
-### 1. Compilación
-Para compilar todos los archivos Java, ejecuta el siguiente comando en la terminal desde el directorio raíz del proyecto:
+https://github.com/m4ti4s1/TareasEDD.git
 
+1. Clonar el repositorio con todo el codigo
+```bash
+git clone https://github.com/m4ti4s1/TareasEDD.git
+```
+2. Abrir el repositorio en Intellij Idea
+3. Dirigirse a la ruta src/Tarea1
+4. Probar el codigo con el Archivo Test
+
+
+### Segunda Forma: ejecutar en la terminal
+1. Compilar archivos .java:
+Ejecuta el siguiente comando en la terminal desde el directorio raíz del proyecto:
 ```bash
 javac Tarea1/*.java
 ```
 
-### 2. Ejecución
+2. Ejecución
 El programa principal está en la clase `Test`. Para ejecutarlo:
 
 ```bash
 java Tarea1.Test
 ```
 
-### 3. Resultados Esperados
+3. Resultados Esperados
 Al ejecutar el programa, deberías ver la siguiente salida:
 
 ```
@@ -48,11 +63,6 @@ Asegúrate de que los archivos estén organizados de la siguiente manera:
     Test.java
 ```
 
-### 5. Ejecución desde IDE (Opcional)
-Si prefieres usar un IDE como IntelliJ IDEA o Eclipse:
-1. Crea un nuevo proyecto Java
-2. Importa los archivos manteniendo la estructura de paquetes (`Tarea1`)
-3. Ejecuta la clase `Test` que contiene el método `main`
 
 ### 6. Modificación y Pruebas
 Puedes modificar el archivo `Test.java` para:
@@ -62,5 +72,6 @@ Puedes modificar el archivo `Test.java` para:
 
 ## Notas
 - El programa ya incluye casos de prueba en la clase `Test`
+- Los test son ejemplos dentro del enunciado de la propia tarea
 - La clase `GND` usa índices basados en 1 para los nodos (el nodo 1 es el primer nodo)
 - La implementación del bitmap es eficiente en memoria, usando enteros para almacenar 32 bits cada uno
