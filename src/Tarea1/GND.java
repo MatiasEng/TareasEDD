@@ -29,6 +29,9 @@ public class GND {
 
     }
 
+    public int getNumNodes() {
+        return numNodes;
+    }
 
     /**
      * Metodo retorna los vecinos del nodo node
