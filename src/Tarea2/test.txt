@@ -1,6 +1,6 @@
-This is a \test\ file containing some \words\ to \test\ the functionality.
+Este es un archivo de \prueba\ que contiene algunas \palabras\ para \probar\ la funcionalidad.
 |
-This is page 2 with more \words\ and another \test\ case.
-Here's a \Java\ example and \binary search tree\ reference.
+Esta es la pagina 2 con mas \palabras\ y otro caso de \prueba.
+Aqui un ejemplo de \Java\ y referencia a \arbol binario de busqueda\.
 |
-Page 3 has \Java\ code and \binary tree\ implementations.
+La pagina 3 tiene codigo \Java\ e implementaciones de \arbol binario\.

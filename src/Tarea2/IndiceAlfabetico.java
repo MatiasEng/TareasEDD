@@ -1,4 +1,4 @@
-package Task2;
+package Tarea2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.TreeSet;
 class IndiceAlfabetico {
     private NodoAVL raiz;
 
-    // Métodos básicos del AVL
+    // Metodos basicos del AVL
     private int altura(NodoAVL nodo) {
         return nodo == null ? 0 : nodo.altura;
     }
@@ -66,7 +66,7 @@ class IndiceAlfabetico {
         // Actualizar altura
         nodo.altura = 1 + Math.max(altura(nodo.izquierdo), altura(nodo.derecho));
 
-        // Balancear el árbol
+        // Balancear el arbol
         int balance = balance(nodo);
 
         // Casos de desbalance
@@ -105,13 +105,13 @@ class IndiceAlfabetico {
         }
     }
 
-    // Métodos para generar el índice
+    // Metodos para generar el indice
     public String generarIndiceCompleto() {
         List<String> entries = new ArrayList<>();
         collectEntries(raiz, entries);
 
         if (entries.isEmpty()) {
-            return "El índice está vacío";
+            return "El indice esta vacio";
         }
 
         return formatAlphabeticalIndex(entries);
@@ -146,20 +146,18 @@ class IndiceAlfabetico {
             char firstLetter = Character.toUpperCase(word.charAt(0));
 
             if (firstLetter != currentLetter) {
-                if (sb.length() > 0) sb.append(" ");
-                sb.append("-").append(firstLetter).append("- ");
+                if (sb.length() > 0) sb.append("\n");
+                sb.append("-").append(firstLetter).append("-\n");
                 currentLetter = firstLetter;
-            } else {
-                sb.append(" ");
             }
 
-            sb.append(word).append(" ").append(occurrences);
+            sb.append(word).append(" ").append(occurrences).append("\n");
         }
 
-        return sb.toString();
+        return sb.toString().trim();
     }
 
-    // Métodos para consultas interactivas
+    // Metodos para consultas interactivas
     public Set<Integer> paginasConPalabra(String palabra) {
         EntradaIndice entrada = buscar(palabra);
         if (entrada == null) return new TreeSet<>();

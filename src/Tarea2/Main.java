@@ -1,4 +1,4 @@
-package Task2;
+package Tarea2;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,28 +9,28 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) {
 
-        String filename = "src/Task2/test.txt";
+        String filename = "src/Tarea2/test.txt";
 
         IndiceAlfabetico indice = new IndiceAlfabetico();
         procesarArchivo(filename, indice);
 
-        // Mostrar menú interactivo
+        // Mostrar menu interactivo
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("\n--- MENÚ ---");
-            System.out.println("1. Mostrar índice completo");
-            System.out.println("2. Buscar páginas de una palabra");
-            System.out.println("3. Buscar páginas con dos palabras");
-            System.out.println("4. Buscar páginas con cualquiera de dos palabras");
+            System.out.println("1. Mostrar indice completo");
+            System.out.println("2. Buscar paginas de una palabra");
+            System.out.println("3. Buscar paginas con dos palabras");
+            System.out.println("4. Buscar paginas con cualquiera de dos palabras");
             System.out.println("5. Salir");
-            System.out.print("Seleccione una opción: ");
+            System.out.print("Seleccione una opcion: ");
 
             int opcion = scanner.nextInt();
-            scanner.nextLine(); // Consumir el salto de línea
+            scanner.nextLine(); // Consumir el salto de linea
 
             switch (opcion) {
                 case 1:
-                    System.out.println("\nÍndice alfabético:");
+                    System.out.println("\nIndice alfabético:");
                     System.out.println(indice.generarIndiceCompleto());
                     break;
                 case 2:
@@ -40,7 +40,7 @@ public class Main {
                     if (paginas.isEmpty()) {
                         System.out.println("La palabra no aparece en el documento.");
                     } else {
-                        System.out.println("Aparece en las páginas: " + paginas);
+                        System.out.println("Aparece en las paginas: " + paginas);
                     }
                     break;
                 case 3:
@@ -50,9 +50,9 @@ public class Main {
                     String p2 = scanner.nextLine();
                     Set<Integer> paginasAmbas = indice.paginasConAmbasPalabras(p1, p2);
                     if (paginasAmbas.isEmpty()) {
-                        System.out.println("No hay páginas con ambas palabras.");
+                        System.out.println("No hay paginas con ambas palabras.");
                     } else {
-                        System.out.println("Páginas con ambas palabras: " + paginasAmbas);
+                        System.out.println("Paginas con ambas palabras: " + paginasAmbas);
                     }
                     break;
                 case 4:
@@ -62,9 +62,9 @@ public class Main {
                     String p4 = scanner.nextLine();
                     Set<Integer> paginasCualquiera = indice.paginasConCualquierPalabra(p3, p4);
                     if (paginasCualquiera.isEmpty()) {
-                        System.out.println("No hay páginas con ninguna de las palabras.");
+                        System.out.println("No hay paginas con ninguna de las palabras.");
                     } else {
-                        System.out.println("Páginas con alguna de las palabras: " + paginasCualquiera);
+                        System.out.println("Paginas con alguna de las palabras: " + paginasCualquiera);
                     }
                     break;
                 case 5:
@@ -72,7 +72,7 @@ public class Main {
                     scanner.close();
                     return;
                 default:
-                    System.out.println("Opción no válida.");
+                    System.out.println("Opcion no valida.");
             }
         }
     }
@@ -83,7 +83,7 @@ public class Main {
             String linea;
 
             while ((linea = br.readLine()) != null) {
-                // Procesar cada línea buscando palabras entre \ y |
+                // Procesar cada linea buscando palabras entre \ y |
                 int inicio = 0;
                 while (true) {
                     int backslash = linea.indexOf('\\', inicio);
@@ -98,7 +98,7 @@ public class Main {
                     inicio = fin + 1;
                 }
 
-                // Verificar si hay un cambio de página
+                // Verificar si hay un cambio de pagina
                 if (linea.contains("|")) {
                     paginaActual++;
                 }

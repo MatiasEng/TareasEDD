@@ -1,4 +1,4 @@
-package Task2;
+package Tarea2;
 
 import java.util.TreeMap;
 
