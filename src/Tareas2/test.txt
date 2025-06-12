@@ -1,6 +1,0 @@
-This is a \test\ file containing some \words\ to \test\ the functionality.
-|
-This is page 2 with more \words\ and another \test\ case.
-Here's a \Java\ example and \binary search tree\ reference.
-|
-Page 3 has \Java\ code and \binary tree\ implementations.
