@@ -6,6 +6,13 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.Set;
 
+/*
+Integrantes:
+1. Matias Constanzo Monsalve
+2. Juan Recabal
+3. Maximiliano Riquelme
+ */
+
 public class Main {
     public static void main(String[] args) {
 

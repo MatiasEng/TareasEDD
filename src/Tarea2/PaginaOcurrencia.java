@@ -3,11 +3,6 @@ package Tarea2;
 import java.io.*;
 import java.util.*;
 
-// Integrantes del grupo:
-// 1. [Nombre 1]
-// 2. [Nombre 2]
-// 3. [Nombre 3]
-
 class PaginaOcurrencia {
     int pagina;
     int contador;
