@@ -19,13 +19,14 @@ Este proyecto implementa un indice alfabetico utilizando un arbol AVL para organ
 
 ``` bash
 /proyecto/
-  /Tarea2/
-    EntradaIndice.java      # Maneja las ocurrencias de cada palabra
-    IndiceAlfabetico.java   # Implementacion del árbol AVL e indice
-    Main.java               # Programa principal con menu interactivo
-    NodoAVL.java            # Nodo para el arbol AVL
-    PaginaOcurrencia.java   # Registra ocurrencias por pagina
-    test.txt                # Archivo de prueba
+    /src/
+      /Tarea2/
+        EntradaIndice.java      # Maneja las ocurrencias de cada palabra
+        IndiceAlfabetico.java   # Implementacion del árbol AVL e indice
+        Main.java               # Programa principal con menu interactivo
+        NodoAVL.java            # Nodo para el arbol AVL
+        PaginaOcurrencia.java   # Registra ocurrencias por pagina
+        test.txt                # Archivo de prueba
 ```
 
 ## Requisitos
@@ -92,7 +93,7 @@ Al ejecutar el programa, aparecera un menu con las siguientes opciones:
 
    ```
 
-3. Prueba buscar palabras individuales o combinaciones con las opciones 2-4
+3. Prueba buscar palabras individuales o combinaciones con las opciones del menu
 
 ## Notas
 
