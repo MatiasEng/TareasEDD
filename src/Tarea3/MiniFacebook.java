@@ -1,123 +1,118 @@
 package Tarea3;
-import java.util.*;
+
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.MonthDay;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-class MiniFacebook {
+public class MiniFacebook {
     private Map<Integer, Persona> personas;
-    private int contadorId;
+    private AtomicInteger contadorId;
 
     public MiniFacebook() {
         this.personas = new HashMap<>();
-        this.contadorId = 1;
+        this.contadorId = new AtomicInteger(1);
     }
 
-    // 1. Insertar persona
+    // Métodos básicos
     public void insertarPersona(String nombre, int dia, int mes, String profesion, String email) {
-        Persona nueva = new Persona(contadorId++, nombre, dia, mes, profesion, email);
-        personas.put(nueva.id, nueva);
-        System.out.println("Persona " + nombre + " agregada con ID: " + nueva.id);
+        int nuevoId = contadorId.getAndIncrement();
+        Persona nueva = new Persona(nuevoId, nombre, dia, mes, profesion, email);
+        personas.put(nuevoId, nueva);
+        System.out.println("Persona " + nombre + " agregada con ID: " + nuevoId);
     }
 
-    // 2. Agregar amistad
     public void agregarAmistad(int id1, int id2, LocalDate fecha) {
         if (!personas.containsKey(id1) || !personas.containsKey(id2)) {
-            System.out.println("Una o ambas personas no existen");
-            return;
+            throw new IllegalArgumentException("Una o ambas personas no existen");
         }
 
         Persona p1 = personas.get(id1);
         Persona p2 = personas.get(id2);
 
-        // Agregar amistad bidireccional
         p1.amigos.put(id2, new Amistad(fecha));
         p2.amigos.put(id1, new Amistad(fecha));
 
-        // Notificar amigos directos
+        System.out.println(p1.nombre + " y " + p2.nombre + " son ahora amigos");
         notificarNuevaAmistad(p1, p2, fecha);
         notificarNuevaAmistad(p2, p1, fecha);
-
-        System.out.println(p1.nombre + " y " + p2.nombre + " son ahora amigos");
     }
 
     private void notificarNuevaAmistad(Persona p1, Persona p2, LocalDate fecha) {
-        for (int amigoId : p2.amigos.keySet()) {
-            if (amigoId != p1.id) {
-                Persona amigo = personas.get(amigoId);
-                System.out.println("\n--- Email de notificación ---");
+        for (Map.Entry<Integer, Amistad> entrada : p2.amigos.entrySet()) {
+            if (!entrada.getValue().bloqueado && entrada.getKey() != p1.id) {
+                Persona amigo = personas.get(entrada.getKey());
+                System.out.println("\n--- Notificación de Amistad ---");
                 System.out.println("Para: " + amigo.email);
                 System.out.println("Fecha: " + fecha);
-                System.out.println("Mensaje: Hola " + amigo.nombre + ", " + p2.nombre +
-                        " se ha hecho amigo de " + p1.nombre +
+                System.out.println("Mensaje: Hola " + amigo.nombre + ",\n" +
+                        p2.nombre + " se ha hecho amigo de " + p1.nombre +
                         ". Tal vez quieras conocerlo/a.");
-                System.out.println("----------------------------\n");
+                System.out.println("-------------------------------");
             }
         }
     }
 
-    // 3. Bloquear amigo
     public void bloquearAmigo(int id1, int id2, LocalDate fecha) {
         if (!personas.containsKey(id1) || !personas.containsKey(id2)) {
-            System.out.println("Una o ambas personas no existen");
-            return;
+            throw new IllegalArgumentException("Una o ambas personas no existen");
         }
 
-        Persona p1 = personas.get(id1);
-        if (p1.amigos.containsKey(id2)) {
-            p1.amigos.get(id2).bloqueado = true;
-            System.out.println(p1.nombre + " ha bloqueado a " + personas.get(id2).nombre);
+        if (personas.get(id1).amigos.containsKey(id2)) {
+            personas.get(id1).amigos.get(id2).bloqueado = true;
+            System.out.println(personas.get(id1).nombre + " ha bloqueado a " + personas.get(id2).nombre);
         } else {
             System.out.println("Estas personas no son amigos");
         }
     }
-    private long calcularDiasHastaCumple(Persona persona) {
-        LocalDate hoy = LocalDate.now();
-        LocalDate cumpleEsteAnio = LocalDate.of(hoy.getYear(), persona.mesNacimiento, persona.diaNacimiento);
 
-        if (cumpleEsteAnio.isBefore(hoy)) {
-            // Si el cumpleaños ya pasó este año, calcular para el próximo año
-            cumpleEsteAnio = cumpleEsteAnio.plusYears(1);
-        }
-
-        return hoy.until(cumpleEsteAnio, java.time.temporal.ChronoUnit.DAYS);
-    }
-    // 4. Notificar cumpleaños próximos
-    public void notificarCumpleanosProximos(int k) {
-        for (Persona persona : personas.values()) {
-            long diasFaltantes = calcularDiasHastaCumple(persona);
-
-            if (diasFaltantes <= k) {
-                LocalDate fechaCumple = LocalDate.now().plusDays(diasFaltantes);
-                notificarAmigosCumple(persona, fechaCumple);
-            }
+    // Métodos de actualización
+    public void actualizarNombre(int id, String nuevoNombre) {
+        if (personas.containsKey(id)) {
+            personas.get(id).nombre = nuevoNombre;
         }
     }
 
-    private void notificarAmigosCumple(Persona cumpleanero, LocalDate fechaCumple) {
-        for (int amigoId : cumpleanero.amigos.keySet()) {
-            if (!cumpleanero.amigos.get(amigoId).bloqueado) {
-                Persona amigo = personas.get(amigoId);
-                System.out.println("\n--- Email de cumpleaños ---");
-                System.out.println("Para: " + amigo.email);
-                System.out.println("Fecha: " + LocalDate.now());
-                System.out.println("Mensaje: Hola " + amigo.nombre + ", " +
-                        cumpleanero.nombre + " cumple años el " +
-                        fechaCumple.getDayOfMonth() + "/" +
-                        fechaCumple.getMonthValue() +
-                        ". ¡No olvides felicitarlo/a!");
-                System.out.println("---------------------------\n");
-            }
+    public void actualizarEmail(int id, String nuevoEmail) {
+        if (personas.containsKey(id)) {
+            personas.get(id).email = nuevoEmail;
         }
     }
 
-    // 5. Nivel de amistad
+    public void actualizarProfesion(int id, String nuevaProfesion) {
+        if (personas.containsKey(id)) {
+            personas.get(id).profesion = nuevaProfesion;
+        }
+    }
+
+    public void actualizarFechaNacimiento(int id, int nuevoDia, int nuevoMes) {
+        if (personas.containsKey(id) && esFechaNacimientoValida(nuevoDia, nuevoMes)) {
+            personas.get(id).diaNacimiento = nuevoDia;
+            personas.get(id).mesNacimiento = nuevoMes;
+        }
+    }
+
+    private boolean esFechaNacimientoValida(int dia, int mes) {
+        try {
+            MonthDay.of(mes, dia);
+            return true;
+        } catch (DateTimeException e) {
+            System.out.println("Fecha de nacimiento inválida: " + dia + "/" + mes);
+            return false;
+        }
+    }
+
+    // Métodos de consulta
     public int nivelAmistad(int id1, int id2) {
         if (!personas.containsKey(id1) || !personas.containsKey(id2)) {
             return Integer.MAX_VALUE;
         }
 
-        // Primero verificamos si son amigos directos
-        if (personas.get(id1).amigos.containsKey(id2)) {
+        if (personas.get(id1).amigos.containsKey(id2) &&
+                !personas.get(id1).amigos.get(id2).bloqueado) {
             return 1;
         }
 
@@ -134,8 +129,11 @@ class MiniFacebook {
             int actual = cola.poll();
             int nivelActual = niveles.get(actual);
 
-            for (int amigoId : personas.get(actual).amigos.keySet()) {
-                if (!visitados.contains(amigoId)) {
+            for (Map.Entry<Integer, Amistad> entrada : personas.get(actual).amigos.entrySet()) {
+                int amigoId = entrada.getKey();
+                Amistad amistad = entrada.getValue();
+
+                if (!amistad.bloqueado && !visitados.contains(amigoId)) {
                     if (amigoId == id2) {
                         return nivelActual + 1;
                     }
@@ -147,5 +145,92 @@ class MiniFacebook {
         }
 
         return Integer.MAX_VALUE;
+    }
+
+    public List<Persona> obtenerTodasPersonas() {
+        return new ArrayList<>(personas.values());
+    }
+
+    public Persona obtenerPersona(int id) {
+        return personas.get(id);
+    }
+
+    public boolean estaBloqueado(int id1, int id2) {
+        if (!personas.containsKey(id1) || !personas.get(id1).amigos.containsKey(id2)) {
+            return false;
+        }
+        return personas.get(id1).amigos.get(id2).bloqueado;
+    }
+
+    public LocalDate obtenerFechaBloqueo(int id1, int id2) {
+        if (!personas.containsKey(id1) || !personas.get(id1).amigos.containsKey(id2)) {
+            return null;
+        }
+        return personas.get(id1).amigos.get(id2).fechaAmistad;
+    }
+
+    public boolean existePersona(int id) {
+        return personas.containsKey(id);
+    }
+
+    // Métodos para cumpleaños
+    public void notificarCumpleañosProximos(int k) {
+        notificarCumpleañosProximos(k, LocalDate.now());
+    }
+
+    public void notificarCumpleañosProximos(int k, LocalDate fechaReferencia) {
+        boolean encontrados = false;
+
+        for (Persona persona : personas.values()) {
+            LocalDate cumpleEsteAnio = LocalDate.of(fechaReferencia.getYear(),
+                    persona.mesNacimiento,
+                    persona.diaNacimiento);
+
+            if (cumpleEsteAnio.isBefore(fechaReferencia)) {
+                cumpleEsteAnio = cumpleEsteAnio.plusYears(1);
+            }
+
+            long diasFaltantes = fechaReferencia.until(cumpleEsteAnio, ChronoUnit.DAYS);
+
+            if (diasFaltantes <= k) {
+                encontrados = true;
+                System.out.println("\n[INFO] " + persona.nombre + " cumple años el " +
+                        cumpleEsteAnio.format(DateTimeFormatter.ofPattern("dd/MM")) +
+                        " (en " + diasFaltantes + " días)");
+                notificarAmigosCumple(persona, cumpleEsteAnio);
+            }
+        }
+
+        if (!encontrados) {
+            System.out.println("No se encontraron cumpleaños en los próximos " + k + " días");
+        }
+    }
+
+    private void notificarAmigosCumple(Persona cumpleanero, LocalDate fechaCumple) {
+        for (Map.Entry<Integer, Amistad> entrada : cumpleanero.amigos.entrySet()) {
+            if (!entrada.getValue().bloqueado) {
+                Persona amigo = personas.get(entrada.getKey());
+                System.out.println("\n--- Email de cumpleaños ---");
+                System.out.println("Para: " + amigo.email);
+                System.out.println("Fecha: " + LocalDate.now());
+                System.out.println("Mensaje: Hola " + amigo.nombre + ", " +
+                        cumpleanero.nombre + " cumple años el " +
+                        fechaCumple.getDayOfMonth() + "/" +
+                        fechaCumple.getMonthValue() +
+                        ". ¡No olvides felicitarlo/a!");
+                System.out.println("---------------------------\n");
+            }
+        }
+    }
+
+    // Métodos adicionales para pruebas
+    public void insertarPersonaParaPrueba(int id, String nombre, int dia, int mes,
+                                          String profesion, String email) {
+        if (personas.containsKey(id)) {
+            throw new IllegalArgumentException("ID ya existe: " + id);
+        }
+        Persona nueva = new Persona(id, nombre, dia, mes, profesion, email);
+        personas.put(id, nueva);
+        contadorId.getAndUpdate(current -> Math.max(current, id + 1));
     }
 }

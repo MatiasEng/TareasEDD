@@ -1,15 +1,17 @@
 package Tarea3;
-import java.util.*;
 
-class Persona {
-    int id;
-    String nombre;
-    int diaNacimiento;
-    int mesNacimiento;
-    String profesion;
-    String email;
-    String status;
-    Map<Integer, Amistad> amigos; // Key: id del amigo, Value: información de amistad
+import java.util.HashMap;
+import java.util.Map;
+
+public class Persona {
+    public int id;
+    public String nombre;
+    public int diaNacimiento;
+    public int mesNacimiento;
+    public String profesion;
+    public String email;
+    public String status;
+    public Map<Integer, Amistad> amigos;
 
     public Persona(int id, String nombre, int dia, int mes, String profesion, String email) {
         this.id = id;

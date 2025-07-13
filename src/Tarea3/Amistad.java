@@ -1,9 +1,10 @@
 package Tarea3;
+
 import java.time.LocalDate;
 
-class Amistad {
-    LocalDate fechaAmistad;
-    boolean bloqueado;
+public class Amistad {
+    public LocalDate fechaAmistad;
+    public boolean bloqueado;
 
     public Amistad(LocalDate fechaAmistad) {
         this.fechaAmistad = fechaAmistad;
