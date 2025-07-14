@@ -1,5 +1,10 @@
 package Tarea3;
+/*Integrantes
 
+- Matias Constanzo Monsalve
+- Maximiliano Riquelme
+- Juan Recabal
+*/
 import java.time.LocalDate;
 
 public class Amistad {

@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\title{Manual de Pruebas: Automatico vs Manual}
+\author{Sistema de Evaluacion}
+\newcommand{\integrantes}{
+\begin{center}
+\textbf{Integrantes:} \\
+- Matias Constanzo Monsalve \\
+- Maximiliano Riquelme \\
+- Juan Recabal
+\end{center}
+}
+
+\begin{document}
+
+\maketitle
+\integrantes
+
+\section{Metodologias de Prueba}
+\subsection{Dos Realidades Distintas}
+En el sistema coexisten dos enfoques de verificacion:
+
+\begin{itemize}
+    \item \textbf{Pruebas Automaticas}: Entidad abstracta que representa la evaluacion programada. Es un conjunto de reglas algoritmicas sin intervencion humana.
+
+    \item \textbf{Pruebas Manuales}: Realizadas por usuarios (desarrolladores o evaluadores) que interactuan directamente con el sistema.
+\end{itemize}
+
+\textcolor{blue}{\textbf{Axioma 1}}: Las pruebas automaticas no existen en el modo manual. Son constructos abstractos del modo automatizado.
+
+\section{Modificando el Metodo de Pruebas Automaticas}
+Para adaptar el sistema automatico, edite este metodo en \texttt{Evaluator.java}:
+
+\begin{lstlisting}[language=Java,basicstyle=\ttfamily\small]
+public void configurarPruebas(boolean modoEstricto, int intentosPermitidos) {
+    // @param modoEstricto: Si es verdadero, falla al primer error
+    // @param intentosPermitidos: Limite de reintentos
+    this.toleranciaErrores = !modoEstricto;
+    this.maxReintentos = intentosPermitidos;
+}
+\end{lstlisting}
+
+\subsection{Variables de Configuracion}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Variable} & \textbf{Funcion} \\
+\hline
+\texttt{modoEstricto} & Finaliza ejecucion al primer fallo \\
+\hline
+\texttt{intentosPermitidos} & Cantidad de reintentos para pruebas inestables \\
+\hline
+\texttt{debugMode} & Muestra detalles internos del sistema automatico \\
+\hline
+\end{tabular}
+
+\section{Modo Manual: Instrucciones Detalladas}
+Cuando trabaje fuera del modo automatico, siga este procedimiento:
+
+\subsection{1. Preparacion del Entorno}
+\begin{enumerate}
+    \item Elimine todas las instancias automaticas
+    \item Desactive los componentes automaticos:
+    \begin{lstlisting}[language=Java]
+    System.setProperty("pruebas.auto", "false");
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{2. Simulacion de Pruebas}
+Realice manualmente las acciones equivalentes:
+
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Accion Automatica} & \textbf{Equivalente Manual} \\
+\hline
+Verificacion de grafos & Usar \texttt{directedGraph.print()} \\
+\hline
+Comparacion de resultados & Revisar \texttt{expected.csv} manualmente \\
+\hline
+Generacion de reportes & Ejecutar \texttt{GeneradorReportes.inicioManual()} \\
+\hline
+\end{tabular}
+
+\section{Precaucion Conceptual}
+\begin{quote}
+\textcolor{red}{«Al trabajar manualmente, usted asume el rol del sistema automatico, pero recuerde: en ese momento, la version automatizada deja de existir en su contexto de pruebas. Ambas modalidades no pueden coexistir.»}
+\end{quote}
+
+\end{document}

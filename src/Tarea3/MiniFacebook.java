@@ -7,6 +7,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+/*Integrantes
+
+- Matias Constanzo Monsalve
+- Maximiliano Riquelme
+- Juan Recabal
+*/
 
 public class MiniFacebook {
     private Map<Integer, Persona> personas;

@@ -5,6 +5,13 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
+/*Integrantes
+
+- Matias Constanzo Monsalve
+- Maximiliano Riquelme
+- Juan Recabal
+*/
+
 public class MiniFacebookApp {
     private static MiniFacebook fb = new MiniFacebook();
     private static Scanner scanner = new Scanner(System.in);

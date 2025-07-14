@@ -3,6 +3,12 @@ package Tarea3;
 import java.util.HashMap;
 import java.util.Map;
 
+/*Integrantes
+
+- Matias Constanzo Monsalve
+- Maximiliano Riquelme
+- Juan Recabal
+*/
 public class Persona {
     public int id;
     public String nombre;
