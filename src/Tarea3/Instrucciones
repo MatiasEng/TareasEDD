@@ -1,91 +1,51 @@
-\documentclass{article}
-\usepackage[spanish]{babel}
-\usepackage{xcolor}
-\usepackage{listings}
+Integrantes:
 
-\title{Manual de Pruebas: Automatico vs Manual}
-\author{Sistema de Evaluacion}
-\newcommand{\integrantes}{
-\begin{center}
-\textbf{Integrantes:} \\
-- Matias Constanzo Monsalve \\
-- Maximiliano Riquelme \\
-- Juan Recabal
-\end{center}
-}
+Matias Constanzo Monsalve
+Maximiliano Riquelme
+Juan Recabal
 
-\begin{document}
+1. Metodologías de Prueba
+Dos Realidades Distintas
+En el sistema coexisten dos enfoques de verificación:
 
-\maketitle
-\integrantes
+Pruebas Automáticas: Entidad abstracta que ejecuta evaluaciones programadas sin intervención humana, basada en reglas algorítmicas.
 
-\section{Metodologias de Prueba}
-\subsection{Dos Realidades Distintas}
-En el sistema coexisten dos enfoques de verificacion:
+Pruebas Manuales: Realizadas por desarrolladores o evaluadores que interactúan directamente con el sistema.
 
-\begin{itemize}
-    \item \textbf{Pruebas Automaticas}: Entidad abstracta que representa la evaluacion programada. Es un conjunto de reglas algoritmicas sin intervencion humana.
+Axioma 1: Las pruebas automáticas no existen en el modo manual. Son un constructo abstracto del modo automatizado.
 
-    \item \textbf{Pruebas Manuales}: Realizadas por usuarios (desarrolladores o evaluadores) que interactuan directamente con el sistema.
-\end{itemize}
+2. Modificaciones para Pruebas Automáticas
+Para configurar el sistema automático, edite el método en Evaluator.java:
 
-\textcolor{blue}{\textbf{Axioma 1}}: Las pruebas automaticas no existen en el modo manual. Son constructos abstractos del modo automatizado.
-
-\section{Modificando el Metodo de Pruebas Automaticas}
-Para adaptar el sistema automatico, edite este metodo en \texttt{Evaluator.java}:
-
-\begin{lstlisting}[language=Java,basicstyle=\ttfamily\small]
 public void configurarPruebas(boolean modoEstricto, int intentosPermitidos) {
     // @param modoEstricto: Si es verdadero, falla al primer error
-    // @param intentosPermitidos: Limite de reintentos
+    // @param intentosPermitidos: Límite de reintentos
     this.toleranciaErrores = !modoEstricto;
     this.maxReintentos = intentosPermitidos;
 }
-\end{lstlisting}
 
-\subsection{Variables de Configuracion}
-\begin{tabular}{|l|l|}
-\hline
-\textbf{Variable} & \textbf{Funcion} \\
-\hline
-\texttt{modoEstricto} & Finaliza ejecucion al primer fallo \\
-\hline
-\texttt{intentosPermitidos} & Cantidad de reintentos para pruebas inestables \\
-\hline
-\texttt{debugMode} & Muestra detalles internos del sistema automatico \\
-\hline
-\end{tabular}
 
-\section{Modo Manual: Instrucciones Detalladas}
-Cuando trabaje fuera del modo automatico, siga este procedimiento:
+Variables Clave
+Variable -->	Función
+modoEstricto -->	Detiene la ejecución al primer fallo.
+intentosPermitidos -->	Número de reintentos para pruebas inestables.
+debugMode -->	Muestra detalles internos del sistema.
 
-\subsection{1. Preparacion del Entorno}
-\begin{enumerate}
-    \item Elimine todas las instancias automaticas
-    \item Desactive los componentes automaticos:
-    \begin{lstlisting}[language=Java]
-    System.setProperty("pruebas.auto", "false");
-    \end{lstlisting}
-\end{enumerate}
+3. Modo Manual: Instrucciones
+Paso 1: Preparación del Entorno
+Elimine todas las instancias automáticas.
 
-\subsection{2. Simulacion de Pruebas}
-Realice manualmente las acciones equivalentes:
+Desactive los componentes automáticos:
 
-\begin{tabular}{|l|l|}
-\hline
-\textbf{Accion Automatica} & \textbf{Equivalente Manual} \\
-\hline
-Verificacion de grafos & Usar \texttt{directedGraph.print()} \\
-\hline
-Comparacion de resultados & Revisar \texttt{expected.csv} manualmente \\
-\hline
-Generacion de reportes & Ejecutar \texttt{GeneradorReportes.inicioManual()} \\
-\hline
-\end{tabular}
+System.setProperty("pruebas.auto", "false");
 
-\section{Precaucion Conceptual}
-\begin{quote}
-\textcolor{red}{«Al trabajar manualmente, usted asume el rol del sistema automatico, pero recuerde: en ese momento, la version automatizada deja de existir en su contexto de pruebas. Ambas modalidades no pueden coexistir.»}
-\end{quote}
+Paso 2: Simulación de Pruebas
 
-\end{document}
+Acción Automática	        Equivalente Manual
+Verificación de grafos	    Usar directedGraph.print()
+Comparación de resultados	Revisar manualmente expected.csv
+Generación de reportes	    Ejecutar GeneradorReportes.inicioManual()
+
+4. Advertencia Importante
+«Al trabajar manualmente, usted asume el rol del sistema automático.
+Recuerde: en este modo, la versión automatizada no existe. Ambas modalidades son mutuamente excluyentes.»
