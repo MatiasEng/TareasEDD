@@ -89,16 +89,25 @@ public class MiniFacebookApp {
                     p.nombre, p.id, p.diaNacimiento, p.mesNacimiento, p.email, p.profesion);
         });
 
-        System.out.println("\nRelaciones de amistad:");
+        System.out.println("\nRelaciones de amistad activas:");
         fb.obtenerTodasPersonas().forEach(p1 -> {
             fb.obtenerTodasPersonas().forEach(p2 -> {
                 if (p1.id < p2.id) {
                     int nivel = fb.nivelAmistad(p1.id, p2.id);
-                    if (nivel != Integer.MAX_VALUE) {
-                        String bloqueo = fb.estaBloqueado(p1.id, p2.id) ? " (BLOQUEADO)" : "";
-                        System.out.printf("%s ↔ %s: Nivel %d%s%n",
-                                p1.nombre, p2.nombre, nivel, bloqueo);
+                    if (nivel != Integer.MAX_VALUE && !fb.estaBloqueado(p1.id, p2.id)) {
+                        System.out.printf("%s ↔ %s: Nivel %d%n",
+                                p1.nombre, p2.nombre, nivel);
                     }
+                }
+            });
+        });
+
+        System.out.println("\nRelaciones bloqueadas:");
+        fb.obtenerTodasPersonas().forEach(p1 -> {
+            fb.obtenerTodasPersonas().forEach(p2 -> {
+                if (p1.id < p2.id && fb.estaBloqueado(p1.id, p2.id)) {
+                    System.out.printf("%s ↔ %s: BLOQUEADO%n",
+                            p1.nombre, p2.nombre);
                 }
             });
         });

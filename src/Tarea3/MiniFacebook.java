@@ -25,6 +25,9 @@ public class MiniFacebook {
 
     // Métodos básicos
     public void insertarPersona(String nombre, int dia, int mes, String profesion, String email) {
+        if (!esFechaNacimientoValida(dia, mes)) {
+            throw new IllegalArgumentException("Fecha inválida: " + dia + "/" + mes);
+        }
         int nuevoId = contadorId.getAndIncrement();
         Persona nueva = new Persona(nuevoId, nombre, dia, mes, profesion, email);
         personas.put(nuevoId, nueva);
@@ -49,8 +52,14 @@ public class MiniFacebook {
 
     private void notificarNuevaAmistad(Persona p1, Persona p2, LocalDate fecha) {
         for (Map.Entry<Integer, Amistad> entrada : p2.amigos.entrySet()) {
-            if (!entrada.getValue().bloqueado && entrada.getKey() != p1.id) {
-                Persona amigo = personas.get(entrada.getKey());
+            int amigoId = entrada.getKey();
+            Amistad amistadP2 = entrada.getValue();
+
+            if (amigoId != p1.id
+                    && !amistadP2.bloqueado
+                    && !personas.get(amigoId).amigos.getOrDefault(p1.id, new Amistad(fecha)).bloqueado) {
+
+                Persona amigo = personas.get(amigoId);
                 System.out.println("\n--- Notificación de Amistad ---");
                 System.out.println("Para: " + amigo.email);
                 System.out.println("Fecha: " + fecha);
@@ -63,16 +72,26 @@ public class MiniFacebook {
     }
 
     public void bloquearAmigo(int id1, int id2, LocalDate fecha) {
+        // Verificar que ambas personas existan
         if (!personas.containsKey(id1) || !personas.containsKey(id2)) {
             throw new IllegalArgumentException("Una o ambas personas no existen");
         }
 
-        if (personas.get(id1).amigos.containsKey(id2)) {
-            personas.get(id1).amigos.get(id2).bloqueado = true;
-            System.out.println(personas.get(id1).nombre + " ha bloqueado a " + personas.get(id2).nombre);
-        } else {
-            System.out.println("Estas personas no son amigos");
+        // Verificar que sean amigos antes de bloquear
+        if (!personas.get(id1).amigos.containsKey(id2)) {
+            throw new IllegalArgumentException(personas.get(id1).nombre + " y " +
+                    personas.get(id2).nombre + " no son amigos. No se puede bloquear.");
         }
+
+        // Verificar que no esté ya bloqueado
+        if (personas.get(id1).amigos.get(id2).bloqueado) {
+            throw new IllegalStateException(personas.get(id1).nombre + " ya tiene bloqueado a " +
+                    personas.get(id2).nombre);
+        }
+
+        // Realizar el bloqueo
+        personas.get(id1).amigos.get(id2).bloqueado = true;
+        System.out.println(personas.get(id1).nombre + " ha bloqueado a " + personas.get(id2).nombre);
     }
 
     // Métodos de actualización
